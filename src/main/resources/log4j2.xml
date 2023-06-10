@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Properties>
+        <Property name="basePath">test-logs</Property>
+        <Property name="LOG_PATTERN">%d{HH:mm:ss.SSS} [%-5level] [%-15.15t] %-30.30logger:%-4line - %msg%n%throwable
+        </Property>
+        <Property name="PATTERN_FOR_TEST">%d{HH:mm:ss.SSS} [%-5level] [%-15.15t] - %msg%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${PATTERN_FOR_TEST}"/>
+        </Console>
+        <RollingFile name="TestLog" fileName="${basePath}/TestLog.log"
+                     filePattern="${basePath}/TestLog-%d{yyyy-MM-dd}.%i.log" immediateFlush="true" append="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <appender-ref ref="console" level="info"/>
+            <appender-ref ref="TestLog" level="info"/>
+        </Root>
+        <Logger name="org.example" additivity="false">
+            <appender-ref ref="console" level="info"/>
+            <appender-ref ref="TestLog" level="info"/>
+        </Logger>
+    </Loggers>
+</Configuration>
