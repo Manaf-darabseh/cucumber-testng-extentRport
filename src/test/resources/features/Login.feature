@@ -1,3 +1,5 @@
+@UI
+
 Feature: Login
 
   Scenario: Verify able to login with valid credentials

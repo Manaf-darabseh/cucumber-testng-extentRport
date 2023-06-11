@@ -16,7 +16,7 @@ public class ConfigFileReader {
     public ConfigFileReader() {
         BufferedReader bufferedReader;
         FileReader fileReader;
-        String propertyFilePath = "config/configuration.properties";
+        String propertyFilePath = System.getProperty("user.dir") + "/src/test/resources/Configurations/configuration.properties";
 
         try {
             fileReader = new FileReader(propertyFilePath);

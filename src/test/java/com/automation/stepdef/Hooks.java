@@ -31,14 +31,6 @@ public class Hooks extends BasePage{
     @After(order=1)
     public void tearDown(Scenario scenario) {
 
-        if(scenario.isFailed()) {
-            try {
-                byte[] screenshot = ((TakesScreenshot)testContext.getDriverManager().getDriver()).getScreenshotAs(OutputType.BYTES);
-                scenario.attach(screenshot, "image/png", scenario.getName());
-            } catch (WebDriverException noSupportScreenshot) {
-                System.err.println(noSupportScreenshot.getMessage());
-            }
-        }
         testContext.getDriverManager().closeDriver();
     }
     
