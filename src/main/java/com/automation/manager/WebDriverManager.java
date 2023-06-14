@@ -8,8 +8,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.automation.Enums.DriverType;
 import com.automation.Enums.EnvironmentType;
@@ -19,6 +17,7 @@ public class WebDriverManager   {
 	private static DriverType driverType;
 	private static EnvironmentType environmentType;
 	private static final String CHROME_DRIVER_PROPERTY = "webdriver.chrome.driver";
+	//private AppiumDriver mobileDriver;
 	
 	
 	
@@ -35,13 +34,22 @@ public class WebDriverManager   {
 
 
 	private WebDriver createDriver() {
-		   switch (environmentType) {	    
-	        case LOCAL : driver = createLocalDriver();
-	        	break;
-	        case REMOTE : driver = createRemoteDriver();
-	        	break;
-		   }
-		   return driver;
+		switch (environmentType) {
+		case LOCAL:
+			driver = createLocalDriver();
+			break;
+		case REMOTE:
+			driver = createRemoteDriver();
+			break;
+		case Mobile:
+			break;
+		case API:
+			break;
+		default:
+			break;
+
+		}
+		return driver;
 	}
 
 	private WebDriver createRemoteDriver() {
@@ -72,8 +80,9 @@ public class WebDriverManager   {
 
 		System.setProperty("webdriver.chrome.driver",
 				System.getProperty("user.dir") + "\\webdrivers\\chrome\\chromedriver.exe");
-
+		
 		ChromeOptions options = new ChromeOptions();
+
 		options.addArguments("start-maximized");
 		options.setExperimentalOption("excludeSwitches",Arrays.asList("disable-popup-blocking"));
 		options.addArguments("test-type");

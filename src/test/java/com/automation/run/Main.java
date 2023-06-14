@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 @CucumberOptions(features = {"src/test/resources/features/"}
 		,glue="com.automation.stepdef"
 		,plugin = {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"}
+		,tags = "@mobile"
 )
 
 

@@ -17,7 +17,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<aspectj.version>1.9.7</aspectj.version>
-		<selenium.version>3.141.59</selenium.version>
+		<selenium.version>4.10.0</selenium.version>
 	</properties>
 
 	<dependencies>
@@ -25,6 +25,11 @@
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 			<version>${selenium.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-remote-driver</artifactId>
+			<version>3.6.0</version>
 		</dependency>
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
@@ -117,6 +122,34 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20230227</version>
+		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/io.rest-assured/json-schema-validator -->
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>json-schema-validator</artifactId>
+			<version>5.3.0</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.appium/java-client -->
+		<dependency>
+			<groupId>io.appium</groupId>
+			<artifactId>java-client</artifactId>
+			<version>8.5.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.android.tools.ddms/ddmlib -->
+		<dependency>
+			<groupId>com.android.tools.ddms</groupId>
+			<artifactId>ddmlib</artifactId>
+			<version>22.0</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.0.0</version>
 		</dependency>
 
 

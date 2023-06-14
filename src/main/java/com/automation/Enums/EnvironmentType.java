@@ -2,5 +2,7 @@ package com.automation.Enums;
 
 public enum EnvironmentType {
     LOCAL,
-    REMOTE
+    REMOTE,
+    Mobile,
+    API
 }

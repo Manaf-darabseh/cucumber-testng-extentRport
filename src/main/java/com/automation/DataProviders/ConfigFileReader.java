@@ -80,6 +80,10 @@ public class ConfigFileReader {
                 return EnvironmentType.LOCAL;
             case "remote":
                 return EnvironmentType.REMOTE;
+            case "Mobile":
+                return EnvironmentType.Mobile;
+            case "API":
+                return EnvironmentType.API;
             default:
                 throw new RuntimeException("Environment type key value in configuration file is not matched: " + environmentName);
         }

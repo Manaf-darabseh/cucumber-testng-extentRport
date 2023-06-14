@@ -9,6 +9,7 @@ import com.automation.utils.UtilProperties;
 
 import io.cucumber.core.cli.Main;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -37,8 +38,7 @@ public class BasePage  {
 	        this.webDriver = webDriver;
 	    }
 	
-	  private final int TIMEOUT = 30; // in second
-//	 private WebDriverWait wait = new WebDriverWait(webDriver.getDriver(),TIMEOUT);;
+//	 private WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(),Duration.ofSeconds(60));
 	  
 
 		
@@ -203,7 +203,7 @@ public class BasePage  {
 	 * The following function can get the attribute value Method is duplicated
 	 */
 	public WebElement getElementById(String selector) {
-		WebDriverWait wait = new WebDriverWait(webDriver.getDriver(), 60);
+		WebDriverWait wait = new WebDriverWait(webDriver.getDriver(), Duration.ofSeconds(30)); 
 
 		if (UtilProperties.getInstance().getProperty(selector).contains("//")) {
 			wait.until(ExpectedConditions
@@ -551,7 +551,7 @@ public class BasePage  {
 	 * not
 	 */
 	public WebElement savedWebElement(String selector) {
-		WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(), 60, TIMEOUT);
+		WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(),Duration.ofSeconds(60));
 		String elementLocation = UtilProperties.getInstance().getProperty(selector);
 
 		// Save CSS WebEelement in string
@@ -582,7 +582,8 @@ public class BasePage  {
 	 * not
 	 */
 	public List<WebElement> listwebelement(String selector) {
-		WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(), 60, TIMEOUT);
+		
+		WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(),Duration.ofSeconds(60));
 		List<WebElement> listItems;
 
 		String elementLocation = UtilProperties.getInstance().getProperty(selector);
@@ -608,8 +609,7 @@ public class BasePage  {
 	 * not
 	 */
 	public void waitVisibilityOfWebelement(String selector) {
-		WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(), 60);
-
+		WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(),Duration.ofSeconds(60));
 		String elementLocation = UtilProperties.getInstance().getProperty(selector);
 
 		// Save CSS WebEelement in string
@@ -631,8 +631,7 @@ public class BasePage  {
 	 * not
 	 */
 	public void waitElementToBeClickable(String selector) {
-		WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(), 60);
-
+		WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(),Duration.ofSeconds(60));
 		String elementLocation = UtilProperties.getInstance().getProperty(selector);
 
 		// Save CSS WebEelement in string
@@ -655,8 +654,7 @@ public class BasePage  {
 	 * not
 	 */
 	public void waitElementToBeInvisible(String selector) {
-		WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(), 60);
-
+		WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(),Duration.ofSeconds(60));
 		String elementLocation = UtilProperties.getInstance().getProperty(selector);
 
 		// Save CSS WebEelement in string

@@ -3,30 +3,44 @@ package com.automation.stepdef;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
+
+
+import java.net.MalformedURLException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriverException;
-
 import com.automation.Pages.BasePage;
 import com.automation.Utilities.TestContext;
 import com.automation.manager.FileReaderManager;
+import com.automation.manager.MobileDriverProviderCreator;
 import com.automation.manager.WebDriverManager;
+import com.automation.utils.UtilProperties;
 
 public class Hooks extends BasePage{
 
     TestContext testContext;
     WebDriverManager webDriver;
+    MobileDriverProviderCreator mobileDriver;
 
     public Hooks(WebDriverManager driver , TestContext context) {
         super(driver);
         testContext = context;
     }
 
-    @Before
+    @Before("@web")
     public void setUp() {
         webDriver = testContext.getDriverManager();
         webDriver.getDriver().get(FileReaderManager.getInstance().getConfigFileReader().getUrl());
     }
+    
+    @Before("@mobile")
+	public void setUpAppium() throws MalformedURLException
+	{
+    	
+    		mobileDriver = testContext.getmobileDriverManager();
+    		mobileDriver.initializePortsAndUUIDs();
+    	//	mobileDriver.getCurrentDriver();
+    		mobileDriver = testContext.getmobileDriverManager();
+		}
 
     @After(order=1)
     public void tearDown(Scenario scenario) {
