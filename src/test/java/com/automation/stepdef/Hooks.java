@@ -14,6 +14,9 @@ import com.automation.manager.FileReaderManager;
 import com.automation.manager.MobileDriverProviderCreator;
 import com.automation.manager.WebDriverManager;
 import com.automation.utils.UtilProperties;
+import org.testng.annotations.BeforeMethod;
+
+import javax.management.Query;
 
 public class Hooks extends BasePage{
 
@@ -31,23 +34,23 @@ public class Hooks extends BasePage{
         webDriver = testContext.getDriverManager();
         webDriver.getDriver().get(FileReaderManager.getInstance().getConfigFileReader().getUrl());
     }
-    
-    @Before("@mobile")
-	public void setUpAppium() throws MalformedURLException
-	{
-    	
-    		mobileDriver = testContext.getmobileDriverManager();
-    		mobileDriver.initializePortsAndUUIDs();
-    	//	mobileDriver.getCurrentDriver();
-    		mobileDriver = testContext.getmobileDriverManager();
-		}
 
-    @After(order=1)
+    @Before("@mobile")
+    public void setUpAppium() throws MalformedURLException
+    {
+
+        mobileDriver = testContext.getmobileDriverManager();
+        mobileDriver.initializePortsAndUUIDs();
+        //	mobileDriver.getCurrentDriver();
+        mobileDriver = testContext.getmobileDriverManager();
+    }
+
+    @After("@web")
     public void tearDown(Scenario scenario) {
 
         testContext.getDriverManager().closeDriver();
     }
-    
+
 	@After(order = 2) // Cucumber After Hook with order 1
 	public void takeScreenShotOnFailedScenario(Scenario scenario) {
 
@@ -57,4 +60,14 @@ public class Hooks extends BasePage{
 			scenario.attach(screenshot, "image/png", scenario.getName());
 		}
 	}
+
+//	    @BeforeMethod
+//	    public void beforeScenario(Scenario scenario) {
+//	        // Create a new Extent Test with the scenario name
+//	        extentTest = extentReports.createTest(scenario.getName());
+//	    }
+
+	    
+	    	
+
 }

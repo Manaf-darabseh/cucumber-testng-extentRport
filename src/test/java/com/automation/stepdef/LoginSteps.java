@@ -8,6 +8,7 @@ import org.testng.Assert;
 import com.automation.Pages.BasePage;
 import com.automation.Pages.Login_Page;
 import com.automation.Utilities.TestContext;
+import com.automation.manager.FileReaderManager;
 
 public class LoginSteps {
     TestContext testContext;
@@ -20,8 +21,10 @@ public class LoginSteps {
         basePage = testContext.getPageObjectManager().getbasePage();
     }
 
+
     @Given("Verify that Login page is displayed")
     public void LoginPageIsDisplayed() {
+        basePage.go(FileReaderManager.getInstance().getConfigFileReader().getUrl());
 //        Assert.assertTrue(loginPage.LoginIsDisplayed());
         Assert.assertTrue(basePage.elementDisplaysSimple("UserName"));
     }

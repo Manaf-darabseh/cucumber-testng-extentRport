@@ -1,4 +1,4 @@
-@UI
+@Web
 
 Feature: Login
 

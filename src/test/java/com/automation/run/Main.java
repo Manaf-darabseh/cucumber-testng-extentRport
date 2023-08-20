@@ -6,15 +6,17 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
 
 @CucumberOptions(features = {"src/test/resources/features/"}
 		,glue="com.automation.stepdef"
 		,plugin = {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"}
-		,tags = "@mobile"
+		,tags = "@API or @Web"
+//        ,tags = "@Web"
 )
 
+	
 
 public class Main extends AbstractTestNGCucumberTests {
     private final Logger logger = LogManager.getLogger(Main.class);
@@ -33,7 +35,7 @@ public class Main extends AbstractTestNGCucumberTests {
     public void beforeSuite() {
         System.out.println("================ BEFORE SUITE ================");
     }
-
+    
     @AfterSuite
     public void afterSuite() {
         System.out.println("================ AFTER SUITE ================");
