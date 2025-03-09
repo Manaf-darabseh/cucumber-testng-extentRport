@@ -23,12 +23,12 @@ Feature: Login Functionality
     Then I should see the error message "<error_message>"
 
     Examples:
-      | username      | password      | error_message                |
-      | standard_user | wrong_pass    | Invalid password            |
-      | wrong_user    | secret_sauce  | Invalid username            |
-      | locked_user   | secret_sauce  | User is locked              |
-      |               | secret_sauce  | Username is required        |
-      | standard_user |               | Password is required        |
+      | username      | password      | error_message                                                                    |
+      | standard_user | wrong_pass    | Epic sadface: Username and password do not match any user in this service       |
+      | wrong_user    | secret_sauce  | Epic sadface: Username and password do not match any user in this service       |
+      | locked_user   | secret_sauce  | Epic sadface: Username and password do not match any user in this service       |
+      |               | secret_sauce  | Epic sadface: Username is required                                              |
+      | standard_user |               | Epic sadface: Password is required                                              |
 
   @Smoke @Security
   Scenario: Verify password field masks the input
