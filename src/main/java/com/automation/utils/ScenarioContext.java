@@ -24,4 +24,12 @@ public class ScenarioContext {
     public Boolean isContains(Context key) {
         return scenarioContext.containsKey(key.toString());
     }
+    
+    /**
+     * Clears all context values, resetting the scenario context to its initial state.
+     * This is typically called during test cleanup to ensure a clean state for the next test.
+     */
+    public void clear() {
+        scenarioContext.clear();
+    }
 }

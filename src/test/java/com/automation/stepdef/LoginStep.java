@@ -1,13 +1,15 @@
 package com.automation.stepdef;
 
 import com.automation.Pages.BasePage;
-import com.automation.manager.WebDriverManager;
+import com.automation.manager.DriverManager;
+import org.openqa.selenium.WebDriver;
 
 public class LoginStep extends BasePage {
-	WebDriverManager driver = new WebDriverManager();
+    private final DriverManager driverManager;
 
-    public LoginStep(WebDriverManager driver) {
-        super(driver);
+    public LoginStep(DriverManager driverManager) {
+        super(driverManager.getDriver());
+        this.driverManager = driverManager;
     }
 
 //    @Given("I have URL web page as {string}")

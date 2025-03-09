@@ -20,7 +20,7 @@ public class AppiumScenario {
 
     public AppiumScenario(TestContext context) {
         testContext = context;
-        mobileDriver = testContext.getmobileDriverManager().getCurrentDriver();
+        mobileDriver = testContext.getMobileDriverManager().getCurrentDriver();
        
     }
 	

@@ -1,172 +1,210 @@
 package com.automation.Pages;
 
-
-
-
 import com.automation.manager.MYSQLConnectionManager;
-import com.automation.manager.WebDriverManager;
 import com.automation.utils.UtilProperties;
-
-import io.cucumber.core.cli.Main;
-
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.TimeZone;
-import java.util.concurrent.ThreadLocalRandom;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openqa.selenium.By;
+import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.StaleElementReferenceException;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class BasePage  {
+import java.time.Duration;
+import java.util.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.concurrent.ThreadLocalRandom;
 
-	private final Logger logger = LogManager.getLogger(BasePage.class);
-	
-	 protected WebDriverManager webDriver ;
-	 public BasePage(WebDriverManager  webDriver) {
-	        this.webDriver = webDriver;
-	    }
-	
-//	 private WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(),Duration.ofSeconds(60));
-	  
+/**
+ * Base page class that provides common functionality for all page objects.
+ * Implements the Page Object pattern with useful utility methods for web interactions.
+ */
+public class BasePage {
 
-		
-		public void go(String url) {
-			webDriver.getDriver().get(url);
-			webDriver.getDriver().manage().window().maximize();
+    private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(60);
+    final Logger logger = LogManager.getLogger(BasePage.class);
+    
+    protected final WebDriver driver;
+    protected final WebDriverWait wait;
+    protected final Actions actions;
+    protected final Properties locators;
+    
+    public BasePage(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, DEFAULT_TIMEOUT);
+        this.actions = new Actions(driver);
+        this.locators = loadLocators();
+        PageFactory.initElements(driver, this);
+    }
+    
+    /**
+     * Loads locators from properties file
+     * @return Properties object containing locators
+     */
+    private Properties loadLocators() {
+        Properties props = new Properties();
+        try {
+            String locatorsPath = "src/test/resources/Configurations/locators.properties";
+            FileInputStream input = new FileInputStream(locatorsPath);
+            props.load(input);
+            logger.debug("Loaded locators from {}", locatorsPath);
+        } catch (IOException e) {
+            logger.error("Failed to load locators.properties", e);
+        }
+        return props;
+    }
+    
+    /**
+     * Gets a locator string from properties and converts it to a By object
+     * @param key Property key
+     * @return By locator
+     */
+    protected By getLocator(String key) {
+        String locator = locators.getProperty(key);
+        if (locator == null) {
+            throw new IllegalArgumentException("Locator not found for key: " + key);
+        }
+        
+        if (locator.startsWith("//")) {
+            return By.xpath(locator);
+        } else {
+            return By.cssSelector(locator);
+        }
+    }
+	
+	/**
+	 * Navigates to the specified URL and maximizes the browser window
+	 * @param url URL to navigate to
+	 */
+	public void go(String url) {
+		try {
+			driver.get(url);
+			driver.manage().window().maximize();
+			logger.debug("Navigated to URL: {}", url);
+		} catch (Exception e) {
+			logger.error("Failed to navigate to URL: {}", url, e);
+			throw new RuntimeException("Failed to navigate to URL: " + url, e);
 		}
-		
-		
-//		public static void main(String args[]) throws Throwable {
-//		    try {
-//		        Main.main(new String[] { 
-//		    
-//
-//		        "-g","com.sadakar.common",
-//		        "-g","com.sadakar.stepdefinitions",
-//		        "-g","com.sadakar.testng.runner",
-//		                    
-//		        "classpath:features", 
-//		        
-//		        "-t","@SmokeTest",
-//		        
-//		                
-//		        "-p", "pretty", 
-//		        "-p", "json:target/cucumber-reports/cucumber.json", 
-//		        "-p", "html:target/cucumber-reports/cucumberreport.html",
-//		        "-p","com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:",
-//		        
-//		        "-m"
-//		    }
-//		    );
-//		} catch (Exception e) {
-//		        e.printStackTrace();
-//		        System.out.println("Main method exception : " + e);
-//		}
-//		}
+	}
 
-	/*
-	 * The following function will be used to fill the data in a text box using
-	 * xpath or css which already exist in xpath.properties file or css.properties
+	/**
+	 * Fills a text box with the specified value
+	 * @param element element locator from properties file
+	 * @param value value to enter
+	 * @throws RuntimeException if element cannot be found or interacted with
 	 */
 	public void fillTextBox(String element, String value) {
-		savedWebElement(element).clear();
-		savedWebElement(element).sendKeys(value);
+		try {
+			By locator = getLocator(element);
+			WebElement textBox = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+			textBox.clear();
+			textBox.sendKeys(value);
+			logger.debug("Filled text box {} with value: {}", element, value);
+		} catch (Exception e) {
+			logger.error("Failed to fill text box {} with value: {}", element, value, e);
+			throw new RuntimeException("Failed to fill text box: " + element, e);
+		}
 	}
-	/*
-	 * End of function
-	 */
 
-	/*
-	 * The following function will be used to click on using xpath or css which
-	 * already exist in xpath.properties file or css.properties
+	/**
+	 * Clicks on an element after ensuring it is clickable
+	 * @param selector element locator from properties file
+	 * @throws RuntimeException if element cannot be found or clicked
 	 */
-
 	public void clickBy(String selector) {
-
-		// Click on element
-		waitElementToBeClickable(selector);
-		savedWebElement(selector).click();
+		try {
+			By locator = getLocator(selector);
+			WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
+			element.click();
+			logger.debug("Clicked element: {}", selector);
+		} catch (Exception e) {
+			logger.error("Failed to click element: {}", selector, e);
+			throw new RuntimeException("Failed to click element: " + selector, e);
+		}
 	}
-	/*
-	 * End of function
-	 */
 
-	/*
-	 * The following function will be used to click on using JS which already
-	 * exist in xpath.properties file or css.properties
+	/**
+	 * Clicks on an element using JavaScript or Actions
+	 * @param selector element locator from properties file
+	 * @throws RuntimeException if element cannot be found or clicked
 	 */
 	public void clickByJS(String selector) {
-
-		String elementLocation = UtilProperties.getInstance().getProperty(selector);
-		// Save CSS WebEelement in string
-		By condition = By.cssSelector(elementLocation);
-		WebElement foundElement = webDriver.getDriver().findElement(condition);
-		// Click on element using JS
-//		JavascriptExecutor executor = (JavascriptExecutor) driver;
-//		executor.executeScript("arguments[0].click();", foundElement);
-		
-		
-		
-		Actions actions = new Actions(webDriver.getDriver());
-		actions.moveToElement(foundElement).click().perform();
+		try {
+			By locator = getLocator(selector);
+			WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+			try {
+				((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+				logger.debug("Clicked element using JavaScript: {}", selector);
+			} catch (Exception e) {
+				logger.debug("JavaScript click failed, trying Actions click for: {}", selector);
+				actions.moveToElement(element).click().perform();
+				logger.debug("Clicked element using Actions: {}", selector);
+			}
+		} catch (Exception e) {
+			logger.error("Failed to click element using JS/Actions: {}", selector, e);
+			throw new RuntimeException("Failed to click element: " + selector, e);
+		}
 	}
 
-	/*
-	 * End of function
+	/**
+	 * Checks if an element is displayed
+	 * @param selector element locator from properties file
+	 * @return true if element is displayed and visible, false otherwise
 	 */
-	
-	
-	/*
-	 * End of function
-	 */
-
-	/*
-	 * Check if the element is displayed
-	 */
-
-	public Boolean elementDisplays(String selector) {
-
-		WebElement foundElement = savedWebElement(selector);
-
-		// if element is displayed return True else False
-		boolean isDisplayed = (foundElement == null) ? false : foundElement.isDisplayed();
-		return isDisplayed;
+	public boolean elementDisplays(String selector) {
+		try {
+			By locator = getLocator(selector);
+			WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+			boolean isDisplayed = element.isDisplayed();
+			logger.debug("Element {} display status: {}", selector, isDisplayed);
+			return isDisplayed;
+		} catch (Exception e) {
+			logger.debug("Element {} is not displayed or not found", selector);
+			return false;
+		}
 	}
 
-	/*
-	 * End of function
-	 */
-
-	/*
-	 * The following function can get the text by css or xpath
+	/**
+	 * Gets text from an element
+	 * @param selector element locator from properties file
+	 * @return text content of the element
+	 * @throws RuntimeException if element cannot be found or text cannot be retrieved
 	 */
 	public String getText(String selector) {
-
-		return savedWebElement(selector).getText();
-
+		try {
+			By locator = getLocator(selector);
+			WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+			String text = element.getText();
+			logger.debug("Got text from {}: {}", selector, text);
+			return text;
+		} catch (Exception e) {
+			logger.error("Failed to get text from element: {}", selector, e);
+			throw new RuntimeException("Failed to get text from element: " + selector, e);
+		}
 	}
-	/*
-	 * End of function
-	 */
 
-	/*
-	 * The following function can get the attribute
+	/**
+	 * Gets the value of an attribute from an element
+	 * @param selector element locator from properties file
+	 * @param attribute name of the attribute
+	 * @return value of the attribute or empty string if attribute doesn't exist
+	 * @throws RuntimeException if element cannot be found
 	 */
-	public String getAttribute(String selector) {
-
-		return savedWebElement(selector).getAttribute("onclick");
+	public String getAttribute(String selector, String attribute) {
+		try {
+			By locator = getLocator(selector);
+			WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+			String value = element.getAttribute(attribute);
+			logger.debug("Got attribute '{}' from {}: {}", attribute, selector, value);
+			return value != null ? value : "";
+		} catch (Exception e) {
+			logger.error("Failed to get attribute '{}' from element: {}", attribute, selector, e);
+			throw new RuntimeException(
+				String.format("Failed to get attribute '%s' from element: %s", attribute, selector), e);
+		}
 	}
 	/*
 	 * End of function
@@ -174,10 +212,15 @@ public class BasePage  {
 
 	/*
 	 * The following function can get the attribute value
+	 */
+	/**
+	 * Gets the value attribute from an element
+	 * @param selector element locator from properties file
+	 * @return value of the value attribute in lowercase
 	 */
 	public String getAttributeValue(String selector) {
-
-		return savedWebElement(selector).getAttribute("value").toLowerCase();
+		String value = driver.findElement(getLocator(selector)).getAttribute("value");
+		return value != null ? value.toLowerCase() : "";
 	}
 	/*
 	 * End of function
@@ -188,10 +231,14 @@ public class BasePage  {
 	/*
 	 * The following function can get the attribute value
 	 */
-	public boolean IsSelected(String selector) {
-
-		return savedWebElement(selector).getAttribute("class").contains("selected");
-			
+	/**
+	 * Checks if an element is selected based on its class attribute
+	 * @param selector element locator from properties file
+	 * @return true if element has 'selected' class, false otherwise
+	 */
+	public boolean isSelected(String selector) {
+		String classAttribute = getAttribute(selector, "class");
+		return classAttribute != null && classAttribute.contains("selected");
 	}
 	/*
 	 * End of function
@@ -203,16 +250,16 @@ public class BasePage  {
 	 * The following function can get the attribute value Method is duplicated
 	 */
 	public WebElement getElementById(String selector) {
-		WebDriverWait wait = new WebDriverWait(webDriver.getDriver(), Duration.ofSeconds(30)); 
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30)); 
 
 		if (UtilProperties.getInstance().getProperty(selector).contains("//")) {
 			wait.until(ExpectedConditions
 					.visibilityOfElementLocated(By.xpath(UtilProperties.getInstance().getProperty(selector))));
-			return webDriver.getDriver().findElement(By.xpath(UtilProperties.getInstance().getProperty(selector)));
+			return driver.findElement(By.xpath(UtilProperties.getInstance().getProperty(selector)));
 		} else {
 			wait.until(ExpectedConditions
 					.visibilityOfElementLocated(By.cssSelector(UtilProperties.getInstance().getProperty(selector))));
-			return webDriver.getDriver().findElement(By.cssSelector(UtilProperties.getInstance().getProperty(selector)));
+			return driver.findElement(By.cssSelector(UtilProperties.getInstance().getProperty(selector)));
 		}
 	}
 	/*
@@ -242,7 +289,7 @@ public class BasePage  {
 	public Boolean tableDisplayed(String selector) {
 
 		try {
-			webDriver.getDriver().findElement(By.cssSelector(UtilProperties.getInstance().getProperty(selector)));
+			driver.findElement(By.cssSelector(UtilProperties.getInstance().getProperty(selector)));
 			return true;
 		} catch (org.openqa.selenium.NoSuchElementException e) {
 			return false;
@@ -492,10 +539,10 @@ public class BasePage  {
 		// Add windows into array, then close the new window and switch back to
 		// the
 		// previous window
-		ArrayList<String> tabs2 = new ArrayList<String>(webDriver.getDriver().getWindowHandles());
-		webDriver.getDriver().switchTo().window(tabs2.get(tabs2.size() - 1));
-		webDriver.getDriver().close();
-		webDriver.getDriver().switchTo().window(tabs2.get(0));
+		ArrayList<String> tabs2 = new ArrayList<String>(driver.getWindowHandles());
+		driver.switchTo().window(tabs2.get(tabs2.size() - 1));
+		driver.close();
+		driver.switchTo().window(tabs2.get(0));
 	}
 	/*
 	 * End of function
@@ -513,10 +560,10 @@ public class BasePage  {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ArrayList<String> tabs2 = new ArrayList<String>(webDriver.getDriver().getWindowHandles());
+		ArrayList<String> tabs2 = new ArrayList<String>(driver.getWindowHandles());
 
 		// Switch to the previous Frame(tab)
-		webDriver.getDriver().switchTo().window(tabs2.get(tabs2.size() - 1));
+		driver.switchTo().window(tabs2.get(tabs2.size() - 1));
 	}
 	/*
 	 * End of function
@@ -527,19 +574,19 @@ public class BasePage  {
 	 */
 	public void switchToPopUp() {
 
-		String parentWindowHandler = webDriver.getDriver().getWindowHandle(); // Store your parent window
+		String parentWindowHandler = driver.getWindowHandle(); // Store your parent window
 		String subWindowHandler = null;
 
-		Set<String> handles = webDriver.getDriver().getWindowHandles(); // get all window handles
+		Set<String> handles = driver.getWindowHandles(); // get all window handles
 		Iterator<String> iterator = handles.iterator();
 		while (iterator.hasNext()){
 		    subWindowHandler = iterator.next();
 		}
-		webDriver.getDriver().switchTo().window(subWindowHandler); // switch to popup window
+		driver.switchTo().window(subWindowHandler); // switch to popup window
 
 		// Now you are in the popup window, perform necessary actions here
 
-		webDriver.getDriver().switchTo().window(parentWindowHandler);  // switch back to parent window
+		driver.switchTo().window(parentWindowHandler);  // switch back to parent window
 	}
 	/*
 	 * End of function
@@ -551,7 +598,7 @@ public class BasePage  {
 	 * not
 	 */
 	public WebElement savedWebElement(String selector) {
-		WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(),Duration.ofSeconds(60));
+		WebDriverWait Wait = new WebDriverWait(driver,Duration.ofSeconds(60));
 		String elementLocation = UtilProperties.getInstance().getProperty(selector);
 
 		// Save CSS WebEelement in string
@@ -566,7 +613,7 @@ public class BasePage  {
 		Wait.until(ExpectedConditions.visibilityOfElementLocated(condition));
 
 		// Save found element in WebElement
-		WebElement foundElement = webDriver.getDriver().findElement(condition);
+		WebElement foundElement = driver.findElement(condition);
 
 		// boolean isDisplayed =(foundElement==null) ? false :
 		// foundElement.isDisplayed();
@@ -583,7 +630,7 @@ public class BasePage  {
 	 */
 	public List<WebElement> listwebelement(String selector) {
 		
-		WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(),Duration.ofSeconds(60));
+		WebDriverWait Wait = new WebDriverWait(driver,Duration.ofSeconds(60));
 		List<WebElement> listItems;
 
 		String elementLocation = UtilProperties.getInstance().getProperty(selector);
@@ -600,7 +647,7 @@ public class BasePage  {
 		Wait.until(ExpectedConditions.visibilityOfElementLocated(condition));
 
 		// Save found element in WebElement
-		listItems = webDriver.getDriver().findElements(condition);
+		listItems = driver.findElements(condition);
 
 		return listItems;
 	}
@@ -609,7 +656,7 @@ public class BasePage  {
 	 * not
 	 */
 	public void waitVisibilityOfWebelement(String selector) {
-		WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(),Duration.ofSeconds(60));
+		WebDriverWait Wait = new WebDriverWait(driver,Duration.ofSeconds(60));
 		String elementLocation = UtilProperties.getInstance().getProperty(selector);
 
 		// Save CSS WebEelement in string
@@ -631,7 +678,7 @@ public class BasePage  {
 	 * not
 	 */
 	public void waitElementToBeClickable(String selector) {
-		WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(),Duration.ofSeconds(60));
+		WebDriverWait Wait = new WebDriverWait(driver,Duration.ofSeconds(60));
 		String elementLocation = UtilProperties.getInstance().getProperty(selector);
 
 		// Save CSS WebEelement in string
@@ -654,7 +701,7 @@ public class BasePage  {
 	 * not
 	 */
 	public void waitElementToBeInvisible(String selector) {
-		WebDriverWait Wait = new WebDriverWait(webDriver.getDriver(),Duration.ofSeconds(60));
+		WebDriverWait Wait = new WebDriverWait(driver,Duration.ofSeconds(60));
 		String elementLocation = UtilProperties.getInstance().getProperty(selector);
 
 		// Save CSS WebEelement in string

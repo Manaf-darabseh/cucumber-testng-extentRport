@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="All Test Suite">
-
-     <test verbose="1" name="test1" >
+<suite name="All Test Suite" parallel="none" data-provider-thread-count="1">
+    <!-- Run API tests first as they're faster -->
+    <test verbose="1" name="API Tests">
         <classes>
-            <class name="com.automation.run.Main">
-            </class>
+            <class name="com.automation.run.Main"/>
         </classes>
-
     </test>
 
+    <!-- Run Web tests second since they need browser setup -->
+    <test verbose="1" name="Web Tests">
+        <classes>
+            <class name="com.automation.run.WebTests"/>
+        </classes>
+    </test>
 </suite>
 
 
