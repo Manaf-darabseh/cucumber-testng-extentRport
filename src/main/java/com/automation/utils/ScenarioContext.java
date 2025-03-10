@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.automation.Enums.Context;
+/**
+ * @author Manaf Al-Darabseh
+ */
 
 public class ScenarioContext {
 

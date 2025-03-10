@@ -1,5 +1,10 @@
 package com.automation.manager;
 
+/**
+ * 
+ * @author Manaf Al-Darabseh
+ */
+
 import static java.util.Arrays.asList;
 
 import java.io.IOException;

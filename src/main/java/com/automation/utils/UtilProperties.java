@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.io.FilenameUtils;
+/**
+ * @author Manaf Al-Darabseh
+ */
 
 public class UtilProperties {
 	private Properties defaultProps = new Properties();

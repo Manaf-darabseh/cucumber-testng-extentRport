@@ -4,6 +4,9 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+/**
+ * @author Manaf Al-Darabseh
+ */
 
 /**
  * Login page class representing the login functionality.

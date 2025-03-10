@@ -1,5 +1,10 @@
 package com.automation.manager;
 
+/**
+ * 
+ * @author Manaf Al-Darabseh
+ */
+
 import com.automation.Pages.BasePage;
 import com.automation.Pages.HomePage;
 import com.automation.Pages.Login_Page;

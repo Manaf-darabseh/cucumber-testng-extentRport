@@ -11,7 +11,9 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+/**
+ * @author Manaf Al-Darabseh
+ */
 public class JsonMap {
 
 	private JsonMap() {

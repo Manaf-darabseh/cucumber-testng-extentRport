@@ -1,5 +1,10 @@
 package com.automation.manager;
 
+/**
+ * 
+ * @author Manaf Al-Darabseh
+ */
+
 import com.automation.utils.UtilProperties;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

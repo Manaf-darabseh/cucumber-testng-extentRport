@@ -1,5 +1,10 @@
 package com.automation.Pages;
 
+/**
+ * 
+ * @author Manaf Al-Darabseh
+ */
+
 import com.automation.manager.MYSQLConnectionManager;
 import com.automation.utils.UtilProperties;
 import org.apache.logging.log4j.LogManager;

@@ -1,5 +1,10 @@
 package com.automation.manager;
 
+/**
+ * 
+ * @author Manaf Al-Darabseh
+ */
+
 import com.automation.DataProviders.ConfigFileReader;
 import com.automation.Utilities.PathManager;
 import java.io.File;

@@ -8,6 +8,9 @@ import org.openqa.selenium.WebDriver;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+/**
+ * @author Manaf Al-Darabseh
+ */
 
 /**
  * TestContext class that manages the lifecycle of various managers and contexts

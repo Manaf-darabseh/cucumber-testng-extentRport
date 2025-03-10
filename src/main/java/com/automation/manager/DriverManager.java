@@ -1,5 +1,10 @@
 package com.automation.manager;
 
+/**
+ * 
+ * @author Manaf Al-Darabseh
+ */
+
 import java.time.Duration;
 import java.util.Arrays;
 
