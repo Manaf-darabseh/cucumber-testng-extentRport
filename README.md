@@ -5,32 +5,33 @@ A robust test automation framework combining Cucumber BDD, TestNG, Selenium WebD
 ## Features
 
 - **Cross-Platform Testing**
-  - Web UI testing with Selenium WebDriver
-  - Mobile testing with Appium
-  - Support for multiple browsers (Chrome, Firefox, Edge, Safari)
+    - Web UI testing with Selenium WebDriver
+    - Mobile testing with Appium
+    - Support for multiple browsers (Chrome, Firefox, Edge, Safari)
 
 - **BDD Framework**
-  - Cucumber for behavior-driven development
-  - Gherkin syntax for readable test scenarios
-  - Step definition organization
+    - Cucumber for behavior-driven development
+    - Gherkin syntax for readable test scenarios
+    - Step definition organization
 
 - **Test Management**
-  - TestNG for test orchestration
-  - Parallel test execution support
-  - Test grouping and prioritization
+    - TestNG for test orchestration
+    - Parallel test execution support
+    - Test grouping and prioritization
 
 - **Reporting**
-  - ExtentReports integration
-  - Screenshot capture on failure
-  - Detailed HTML reports
-  - Test execution logs
+    - ExtentReports integration
+    - Screenshot capture on failure
+    - Detailed HTML reports
+    - Test execution logs
 
 - **Framework Features**
-  - Page Object Model design pattern
-  - Dependency injection with PicoContainer
-  - Automatic WebDriver management
-  - Environment-specific configuration
-  - Robust error handling
+    - Page Object Model design pattern
+    - Singleton pattern for DriverManager
+    - Dependency injection with PicoContainer
+    - Automatic WebDriver management
+    - Environment-specific configuration
+    - Robust error handling
 
 ## Prerequisites
 
@@ -47,21 +48,21 @@ A robust test automation framework combining Cucumber BDD, TestNG, Selenium WebD
 
 ## Setup
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd cucumber-testng-extentRport
-   ```
+1.  Clone the repository:
+    ```bash
+    git clone <repository-url>
+    cd cucumber-testng-extentRport
+    ```
 
-2. Install dependencies:
-   ```bash
-   mvn clean install
-   ```
+2.  Install dependencies:
+    ```bash
+    mvn clean install
+    ```
 
-3. Configure test environment:
-   - Update `src/test/resources/Configurations/configuration.properties`
-   - Set browser type, URLs, and timeouts
-   - Configure mobile capabilities if needed
+3.  Configure test environment:
+    - Update `src/test/resources/Configurations/configuration.properties`
+    - Set browser type, URLs, and timeouts
+    - Configure mobile capabilities if needed
 
 ## Running Tests
 
@@ -81,9 +82,9 @@ mvn test -Dbrowser=chrome
 
 ### Method 2: TestNG XML
 
-1. Configure `testng.xml`
-2. Right-click on `testng.xml`
-3. Select 'Run'
+1.  Configure `testng.xml`
+2.  Right-click on `testng.xml`
+3.  Select 'Run'
 
 ### Method 3: Individual Test Classes
 
@@ -167,11 +168,11 @@ Headless = false
 - Type-safe property access
 - Default values for critical settings
 - Robust validation:
-  - URL format validation
-  - Timeout range checks (1-300 seconds)
-  - Browser type validation
-  - Environment type validation
-  - Headless mode parsing
+    - URL format validation
+    - Timeout range checks (1-300 seconds)
+    - Browser type validation
+    - Environment type validation
+    - Headless mode parsing
 - Comprehensive error messages
 
 #### PathManager
@@ -185,24 +186,24 @@ Headless = false
 
 #### Configuration Setup
 1. Always use the appropriate getter methods:
-   ```java
-   String url = FileReaderManager.getInstance().getConfigFileReader().getUrl();
-   long timeout = FileReaderManager.getInstance().getConfigFileReader().getTime();
-   ```
+    ```java
+    String url = FileReaderManager.getInstance().getConfigFileReader().getUrl();
+    long timeout = FileReaderManager.getInstance().getConfigFileReader().getTime();
+    ```
 
 2. Handle configuration errors:
-   ```java
-   try {
-       String browser = FileReaderManager.getInstance().getConfigFileReader().getBrowser();
-   } catch (RuntimeException e) {
-       // Handle invalid configuration
-   }
-   ```
+    ```java
+    try {
+        String browser = FileReaderManager.getInstance().getConfigFileReader().getBrowser();
+    } catch (RuntimeException e) {
+        // Handle invalid configuration
+    }
+    ```
 
 3. Use default values when appropriate:
-   ```java
-   String value = FileReaderManager.getInstance().getProperty("custom.property", "default");
-   ```
+    ```java
+    String value = FileReaderManager.getInstance().getProperty("custom.property", "default");
+    ```
 
 #### Configuration Validation
 - URLs must start with http:// or https://
@@ -220,33 +221,33 @@ The system provides clear error messages for common issues:
 
 ## Best Practices
 
-1. **Test Organization**
-   - Group related scenarios in feature files
-   - Use tags for test categorization
-   - Follow BDD naming conventions
+1.  **Test Organization**
+    - Group related scenarios in feature files
+    - Use tags for test categorization
+    - Follow BDD naming conventions
 
-2. **Code Structure**
-   - Implement Page Object Model
-   - Use dependency injection
-   - Maintain clean step definitions
+2.  **Code Structure**
+    - Implement Page Object Model
+    - Use dependency injection
+    - Maintain clean step definitions
 
-3. **Error Handling**
-   - Implement robust error handling
-   - Capture screenshots on failure
-   - Provide detailed error messages
+3.  **Error Handling**
+    - Implement robust error handling
+    - Capture screenshots on failure
+    - Provide detailed error messages
 
-4. **Maintenance**
-   - Regular dependency updates
-   - Code review guidelines
-   - Documentation updates
+4.  **Maintenance**
+    - Regular dependency updates
+    - Code review guidelines
+    - Documentation updates
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+1.  Fork the repository
+2.  Create a feature branch
+3.  Commit your changes
+4.  Push to the branch
+5.  Create a Pull Request
 
 ## Support
 

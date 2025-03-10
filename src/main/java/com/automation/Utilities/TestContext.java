@@ -8,6 +8,8 @@ import org.openqa.selenium.WebDriver;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import com.automation.manager.DirectoryManager;
+
 /**
  * @author Manaf Al-Darabseh
  */
@@ -15,13 +17,12 @@ import java.nio.file.Paths;
 /**
  * TestContext class that manages the lifecycle of various managers and contexts
  * used throughout the test execution.
- * 
+ *
  * This class is responsible for:
  * 1. Managing WebDriver and Mobile driver instances
  * 2. Handling page objects and scenario context
  * 3. Coordinating test resources and cleanup
- * 4. Managing test output directories and paths
- * 
+ *
  * Path management is handled through the PathManager utility to ensure
  * cross-platform compatibility.
  */
@@ -31,28 +32,20 @@ public class TestContext {
     private final PageObjectManager pageObjectManager;
     private final MobileDriverProviderCreator mobileDriverManager;
     private final ScenarioContext scenarioContext;
+    private final DirectoryManager directoryManager;
 
     public TestContext() {
+        // Initialize directory manager
+        directoryManager = new DirectoryManager();
+
         // Initialize test output directories
-        initializeTestDirectories();
-        
+        directoryManager.initializeTestDirectories();
+
         // Initialize managers
-        driverManager = new DriverManager();
+        driverManager = DriverManager.getInstance();
         pageObjectManager = new PageObjectManager(driverManager.getDriver());
         mobileDriverManager = new MobileDriverProviderCreator();
         scenarioContext = new ScenarioContext();
-    }
-    
-    /**
-     * Initializes required test output directories.
-     * Uses PathManager to ensure cross-platform compatibility.
-     */
-    private void initializeTestDirectories() {
-        // Create screenshots directory
-        new File(PathManager.getScreenshotPath("").replace(".png", "")).mkdirs();
-        
-        // Create reports directory
-        new File(PathManager.getReportsPath()).mkdirs();
     }
 
     public WebDriver getDriver() {
@@ -96,15 +89,15 @@ public class TestContext {
                 }
                 driverManager.closeDriver();
             }
-            
+
             // Clear scenario context
             if (scenarioContext != null) {
                 scenarioContext.clear();
             }
-            
+
         } catch (Exception e) {
             System.err.println(String.format(
-                "Error during test context cleanup: %s", 
+                "Error during test context cleanup: %s",
                 e.getMessage()));
         } finally {
             // Ensure the driver reference is cleared

@@ -85,7 +85,7 @@ public class WebTests extends AbstractTestNGCucumberTests {
     @BeforeSuite
     public void beforeSuite() {
         logger.info("================ STARTING WEB TEST SUITE ================");
-        driverManager = new DriverManager();
+        driverManager = DriverManager.getInstance();
     }
 
     /**

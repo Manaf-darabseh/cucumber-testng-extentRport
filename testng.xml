@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="All Test Suite" parallel="none" data-provider-thread-count="1">
+<suite name="All Test Suite" parallel="tests" thread-count="2" data-provider-thread-count="1">
     <!-- Run API tests first as they're faster -->
     <test verbose="1" name="API Tests">
         <classes>
@@ -15,9 +15,3 @@
         </classes>
     </test>
 </suite>
-
-
-
-
-
-   

@@ -80,7 +80,7 @@ public class Main extends AbstractTestNGCucumberTests {
     @BeforeSuite
     public void beforeSuite() {
         logger.info("================ STARTING TEST SUITE ================");
-        driverManager = new DriverManager();
+        driverManager = DriverManager.getInstance();
     }
 
     /**
