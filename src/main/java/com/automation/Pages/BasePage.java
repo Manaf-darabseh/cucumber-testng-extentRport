@@ -91,7 +91,7 @@ public class BasePage {
             By locator = getLocator(selector);
             return wait.until(ExpectedConditions.elementToBeClickable(locator));
         } catch (Exception e) {
-            logger.error("Failed to find element: {}", selector, e);
+            logger.error("Failed to find element with selector: {}", selector, e);
             throw new RuntimeException("Failed to find element: " + selector, e);
         }
     }
@@ -105,9 +105,9 @@ public class BasePage {
     protected void click(WebElement element, String selector) {
         try {
             element.click();
-            logger.debug("Clicked element: {}", selector);
+            logger.debug("Clicked element with selector: {}", selector);
         } catch (Exception e) {
-            logger.error("Failed to click element: {}", selector, e);
+            logger.error("Failed to click element with selector: {}", selector, e);
             throw new RuntimeException("Failed to click element: " + selector, e);
         }
     }

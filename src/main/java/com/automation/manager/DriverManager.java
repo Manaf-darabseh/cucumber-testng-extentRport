@@ -1,6 +1,8 @@
 package com.automation.manager;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -23,10 +25,12 @@ public class DriverManager {
     private static EnvironmentType environmentType;
     private static final String CHROME_DRIVER_PROPERTY = "webdriver.chrome.driver";
     private static volatile DriverManager instance;
+    private static final Logger logger = LogManager.getLogger(DriverManager.class);
 
     private DriverManager() {
         driverType = FileReaderManager.getInstance().getConfigFileReader().getBrowser();
         environmentType = FileReaderManager.getInstance().getConfigFileReader().getEnvironment();
+        logger.debug("DriverType: {}, EnvironmentType: {}", driverType, environmentType);
     }
 
     /**
@@ -38,6 +42,7 @@ public class DriverManager {
             synchronized (DriverManager.class) {
                 if (instance == null) {
                     instance = new DriverManager();
+                    logger.debug("Creating new DriverManager instance");
                 }
             }
         }
@@ -54,6 +59,7 @@ public class DriverManager {
             synchronized (this) {
                 if (driver == null) {
                     driver = createDriver();
+                    logger.debug("Creating new WebDriver instance");
                 }
             }
         }
@@ -74,6 +80,7 @@ public class DriverManager {
                 break;
             case API:
                 // No driver needed for API testing
+                logger.debug("No driver needed for API testing");
                 break;
             default:
                 throw new RuntimeException("Unsupported environment type: " + environmentType);
@@ -91,6 +98,7 @@ public class DriverManager {
             switch (driverType) {
                 case FIREFOX:
                     // Use WebDriverManager's automatic version management for Firefox
+                    logger.debug("Creating Firefox driver");
                     WebDriverManager.firefoxdriver()
                             .clearDriverCache()
                             .clearResolutionCache()
@@ -99,9 +107,11 @@ public class DriverManager {
                     localDriver = new FirefoxDriver();
                     break;
                 case CHROME:
+                    logger.debug("Creating Chrome driver");
                     localDriver = createChromeDriver();
                     break;
                 case EDGE:
+                    logger.debug("Creating Edge driver");
                     // Use WebDriverManager's automatic version management for Edge
                     WebDriverManager.edgedriver()
                             .clearDriverCache()
@@ -111,6 +121,7 @@ public class DriverManager {
                     localDriver = new EdgeDriver();
                     break;
                 case SAFARI:
+                    logger.debug("Creating Safari driver");
                     // Safari doesn't need WebDriverManager setup
                     localDriver = new SafariDriver();
                     break;
@@ -127,9 +138,11 @@ public class DriverManager {
             localDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 
             driver = localDriver;
+            logger.debug("WebDriver instance created successfully");
 
             return driver;
         } catch (Exception e) {
+            logger.error("Failed to create local driver: " + e.getMessage(), e);
             throw new RuntimeException("Failed to create local driver: " + e.getMessage(), e);
         }
     }
@@ -193,6 +206,7 @@ public class DriverManager {
 
         try {
             // Let WebDriverManager handle Chrome/ChromeDriver compatibility
+            logger.debug("Setting up ChromeDriver using WebDriverManager");
             WebDriverManager.chromedriver()
                     .clearDriverCache()
                     .clearResolutionCache()
@@ -203,8 +217,10 @@ public class DriverManager {
             if (chromeDriver == null) {
                 throw new RuntimeException("Failed to create Chrome driver");
             }
+            logger.debug("ChromeDriver instance created successfully");
             return chromeDriver;
         } catch (Exception e) {
+            logger.error("Failed to create Chrome driver: " + e.getMessage(), e);
             throw new RuntimeException("Failed to create Chrome driver: " + e.getMessage(), e);
         }
 
@@ -213,6 +229,7 @@ public class DriverManager {
     public synchronized void closeDriver() {
         try {
             if (driver != null) {
+                logger.debug("Closing WebDriver instance");
                 // Close all associated windows first
                 for (String handle : driver.getWindowHandles()) {
                     driver.switchTo().window(handle).close();
@@ -221,10 +238,11 @@ public class DriverManager {
                 driver.quit();
             }
         } catch (Exception e) {
-            System.err.println("Error during driver cleanup: " + e.getMessage());
+            logger.error("Error during driver cleanup: " + e.getMessage(), e);
         } finally {
             // Always null out the driver reference
             driver = null;
+            logger.debug("WebDriver instance set to null");
         }
     }
 

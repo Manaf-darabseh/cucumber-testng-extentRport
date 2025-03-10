@@ -9,6 +9,8 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import com.automation.manager.DirectoryManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * @author Manaf Al-Darabseh
@@ -28,6 +30,7 @@ import com.automation.manager.DirectoryManager;
  */
 public class TestContext {
 
+    private static final Logger logger = LogManager.getLogger(TestContext.class);
     private final DriverManager driverManager;
     private final PageObjectManager pageObjectManager;
     private final MobileDriverProviderCreator mobileDriverManager;
@@ -36,12 +39,15 @@ public class TestContext {
 
     public TestContext() {
         // Initialize directory manager
+        logger.debug("Initializing DirectoryManager");
         directoryManager = new DirectoryManager();
 
         // Initialize test output directories
+        logger.debug("Initializing test directories");
         directoryManager.initializeTestDirectories();
 
         // Initialize managers
+        logger.debug("Initializing DriverManager");
         driverManager = DriverManager.getInstance();
         pageObjectManager = new PageObjectManager(driverManager.getDriver());
         mobileDriverManager = new MobileDriverProviderCreator();
@@ -82,6 +88,7 @@ public class TestContext {
     public void tearDown() {
         try {
             // Clean up WebDriver resources
+            logger.debug("Tearing down WebDriver resources");
             if (driverManager != null) {
                 WebDriver driver = driverManager.getDriver();
                 if (driver != null) {
@@ -91,16 +98,16 @@ public class TestContext {
             }
 
             // Clear scenario context
+            logger.debug("Clearing scenario context");
             if (scenarioContext != null) {
                 scenarioContext.clear();
             }
 
         } catch (Exception e) {
-            System.err.println(String.format(
-                "Error during test context cleanup: %s",
-                e.getMessage()));
+            logger.error("Error during test context cleanup: {}", e.getMessage());
         } finally {
             // Ensure the driver reference is cleared
+            logger.debug("Ensuring driver reference is cleared");
             if (driverManager != null) {
                 driverManager.closeDriver();
             }

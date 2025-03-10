@@ -12,6 +12,8 @@ import org.openqa.selenium.WebDriver;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Manages the lifecycle of Page Objects in the framework.
@@ -19,6 +21,7 @@ import java.util.Map;
  */
 public class PageObjectManager {
 
+    private static final Logger logger = LogManager.getLogger(PageObjectManager.class);
     private final WebDriver driver;
     private final Map<Class<?>, Object> pageObjects = new HashMap<>();
 
@@ -60,8 +63,10 @@ public class PageObjectManager {
         return (T) pageObjects.computeIfAbsent(pageClass,
                 clazz -> {
                     try {
+                        logger.debug("Creating new page object: {}", clazz.getName());
                         return clazz.getDeclaredConstructor(WebDriver.class).newInstance(driver);
                     } catch (Exception e) {
+                        logger.error("Failed to create page object: {}", clazz.getName(), e);
                         throw new RuntimeException("Failed to create page object: " + clazz.getName(), e);
                     }
                 });
