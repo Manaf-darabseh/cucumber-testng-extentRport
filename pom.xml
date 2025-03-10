@@ -17,7 +17,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<aspectj.version>1.9.7</aspectj.version>
-		<selenium.version>4.10.0</selenium.version>
+		<selenium.version>4.10.0</selenium.version> <!-- Original version: 4.10.0 -->
 	</properties>
 
 	<dependencies>
@@ -35,109 +35,109 @@
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>7.0.0</version>
+			<version>7.0.0</version> <!-- Original version: 7.0.0 -->
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-java</artifactId>
-			<version>6.8.2</version>
+			<version>6.8.2</version> <!-- Original version: 6.8.2 -->
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-core</artifactId>
-			<version>6.8.2</version>
+			<version>6.8.2</version> <!-- Original version: 6.8.2 -->
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-picocontainer</artifactId>
-			<version>6.8.2</version>
+			<version>6.8.2</version> <!-- Original version: 6.8.2 -->
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-jvm</artifactId>
-			<version>6.8.2</version>
+			<version>6.8.2</version> <!-- Original version: 6.8.2 -->
 			<type>pom</type>
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-testng</artifactId>
-			<version>6.8.2</version>
+			<version>6.8.2</version> <!-- Original version: 6.8.2 -->
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>gherkin</artifactId>
-			<version>15.0.2</version>
+			<version>15.0.2</version> <!-- This seems to be the latest version -->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.14.0</version>
+			<version>2.14.0</version> <!-- Original version: 2.14.0 -->
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.14.0</version>
+			<version>2.14.0</version> <!-- Original version: 2.14.0 -->
 		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>2.6</version>
+			<version>2.6</version> <!-- Replaced commons-lang:commons-lang -->
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.8-dmr</version>
+			<version>8.0.8-dmr</version> <!-- Original version: 8.0.8-dmr -->
 		</dependency>
 		<dependency>
 			<groupId>tech.grasshopper</groupId>
 			<artifactId>extentreports-cucumber6-adapter</artifactId>
-			<version>2.13.0</version>
+			<version>2.13.0</version> <!-- This seems to be the latest version -->
 			<scope>test</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
 		<dependency>
 			<groupId>com.aventstack</groupId>
 			<artifactId>extentreports</artifactId>
-			<version>5.0.9</version>
+			<version>5.0.9</version> <!-- This seems to be the latest version -->
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.22</version>
+			<version>1.18.22</version> <!-- Original version: 1.18.22 -->
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
-			<version>5.3.0</version>
+			<version>5.3.0</version> <!-- Original version: 5.3.0 -->
 			<scope>test</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20230227</version>
+			<version>20230227</version> <!-- Original version: 20230227 -->
 		</dependency>
 		<!--
 		https://mvnrepository.com/artifact/io.rest-assured/json-schema-validator -->
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>json-schema-validator</artifactId>
-			<version>5.3.0</version>
+			<version>5.3.0</version> <!-- Original version: 5.3.0 -->
 			<scope>test</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.appium/java-client -->
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
-			<version>8.5.1</version>
+			<version>8.5.1</version> <!-- Original version: 8.5.1 -->
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.android.tools.ddms/ddmlib -->
 		<dependency>
 			<groupId>com.android.tools.ddms</groupId>
 			<artifactId>ddmlib</artifactId>
-			<version>22.0</version>
+			<version>22.0</version> <!-- Original version: 22.0 -->
 			<scope>runtime</scope>
 		</dependency>
 		<!--
@@ -145,15 +145,14 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.0.0</version>
+			<version>2.0.0</version> <!-- Original version: 2.0.0 -->
 		</dependency>
 
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
-			<version>5.6.3</version>
+			<version>5.6.3</version> <!-- Original version: 5.6.3 -->
 		</dependency>
-
 
 
 	</dependencies>
